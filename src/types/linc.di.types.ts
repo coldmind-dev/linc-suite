@@ -1,0 +1,78 @@
+/**
+ * Copyright (c) 2024 Coldmind AB
+ *
+ * @author Patrik Forsberg
+ * @contact patrik.forsberg@coldmind.com
+ * @date 2024-02-09
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * The software is provided "as is", without warranty of any kind, express or implied,
+ * including but not limited to the warranties of merchantability, fitness for a
+ * particular purpose and noninfringement. In no event shall the authors or copyright
+ * holders be liable for any claim, damages or other liability, whether in an action of
+ * contract, tort or otherwise, arising from, out of or in connection with the software
+ * or the use or other dealings in the software.
+ */
+
+import { container, injectable as tsInjectable, singleton as tsSingleton } from 'tsyringe';
+import { IServerConfig }                                                   from "@server/linc.server-config";
+
+/**
+ * Decorator that marks a class as injectable.
+ * It registers the class in the DI container without specifying it as a singleton.
+ */
+function Injectable(): ClassDecorator {
+	return function (constructor: any) {
+		tsInjectable()(constructor);
+	};
+}
+
+/**
+ * Decorator that marks a class as a singleton and registers it in the DI container.
+ */
+function Singleton(): ClassDecorator {
+	return function (constructor: any) {
+		tsSingleton()(constructor);
+	};
+}
+
+/**
+ * Registers the class as a singleton in the DI container and tags it as a specific type.
+ * @param type The type of class being registered (e.g., 'Client', 'Server', 'Service').
+ */
+export function registerSingletonAs(type: string): ClassDecorator {
+	return function (constructor: any) {
+		tsSingleton()(constructor);
+		container.registerSingleton(type, constructor);
+	};
+}
+
+/**
+ * Custom decorator for marking a class as a client component.
+ * Registers the class as a singleton and tags it as 'Client'.
+ */
+export function Client(): ClassDecorator {
+	return registerSingletonAs( 'CNClient');
+}
+
+/**
+ * Custom decorator for marking a class as a server component.
+ * Registers the class as a singleton and tags it as 'Server'.
+ */
+export function ServerApp(config?: IServerConfig): ClassDecorator {
+	return registerSingletonAs('CMServer');
+}
+
+/**
+ * Custom decorator for marking a class as a service component.
+ * Registers the class as a singleton and tags it as 'Service'.
+ */
+export function Service(): ClassDecorator {
+	return registerSingletonAs('CMService');
+}

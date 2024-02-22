@@ -1,0 +1,123 @@
+/**
+ * Copyright (c) 2024 Coldmind AB
+ *
+ * @author Patrik Forsberg
+ * @contact patrik.forsberg@coldmind.com
+ * @date 2024-01-20
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * The software is provided "as is", without warranty of any kind, express or implied,
+ * including but not limited to the warranties of merchantability, fitness for a
+ * particular purpose and noninfringement. In no event shall the authors or copyright
+ * holders be liable for any claim, damages or other liability, whether in an action of
+ * contract, tort or otherwise, arising from, out of or in connection with the software
+ * or the use or other dealings in the software.
+ */
+
+import { container }              from "tsyringe";
+import { injectable }             from "tsyringe";
+import { constructor }            from "tsyringe/dist/typings/types";
+export const WSS_PLUGIN_TOKEN = "WSS_PLUGIN"; //: InjectionToken<IWebSocketServerPlugin> = TMetaDataEnum.WEB_SOCKET_SERVER_PLUGIN;
+
+/**
+ * Class decorator factory that registers the class as a singleton within
+ * the global container.
+ *
+ * @return {Function} The class decorator
+ *
+function singleton<T>(): (target: constructor<T>) => void {
+	return function(target: constructor<T>): void {
+		injectable()(target);
+		container.registerSingleton(target);
+
+		container.registerInstance<IWebSocketServerPlugin>(
+			WSS_PLUGIN_TOKEN,
+			target as IWebSocketServerPlugin
+		);
+	}
+}
+*/
+
+
+export const SocketServerPlugin = <T extends new (...args: any[]) => IWebSo                                                                     vgcketServerPlugin>(metadata?: any): any => {
+	console.log('::::::::::::::: WssPlugin :: metadata ::', metadata);
+	return function <U extends T>(target: U) {
+		const NewTarget = class extends target {
+			constructor(...args: any[]) {
+				console.log(`::::::::::::::: WssPlugin :: constructor :: args ::`, args);
+				super(...args);
+				console.log(`SET metadata from controller constructor:`, metadata);
+				Reflector.setMetadata(MetadataKeys.ServerPlugin, metadata, NewTarget);
+			}
+		};
+
+		injectable()(NewTarget);
+		container.registerSingleton(MetadataKeys.ServerPlugin, NewTarget);
+		container.registerType(MetadataKeys.ServerPlugin, NewTarget);
+
+		return NewTarget;
+	}
+}
+
+
+
+function WebSocketPlugin<T extends IWebSocketServerPlugin>(): (target: new () => T) => void {
+	return function(target: constructor<T>): void {
+		Reflect.defineMetadata(
+			TMetaDataEnum.WSS_PLUGIN,
+			true,
+			target
+		);
+
+		injectable()(target);
+		container.registerSingleton<T>(WSS_PLUGIN_TOKEN, target);
+	}
+}
+
+/*
+export function Service(): ClassDecorator {
+	return (target: any) => {
+		Reflect.defineMetadata('custom:service', true, target);
+		container.registerSingleton<IWebSocketServerPlugin>(SERVICE_TOKEN, target);
+	};
+}
+*/
+
+/*
+export function WebSocketPlugin(config?: IServerConfig) {
+	return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+		return class extends constructor {
+			constructor(...args: any[]) {
+				super(...args);
+
+				container.register(SERVICE_TOKEN, target, { useClass: target, lifecycle: "Singleton" });
+
+				container.registerSingleton(this)
+			:
+
+				container.registerInstance('IWebSocketServerPlugin', this);
+
+				container.register<IWebSocketServerPlugin>('IWebSocketServerPlugin', { useClass: WebSocketPlugin });
+
+				Reflect.defineMetadata(
+					TMetaDataEnum.WEB_SOCKET_SERVER_PLUGIN,
+					config, this
+				);
+			}
+		};
+	};
+}
+*/
+
+export function getServerSettings(instance: any): IServerConfig | undefined {
+	return Reflect.getMetadata(
+		TMetaDataEnum.WSS_PLUGIN,
+		instance
+	);
+}

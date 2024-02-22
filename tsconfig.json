@@ -1,0 +1,73 @@
+{
+	"compilerOptions": {
+		"target":                           "ES2020",
+		"module":                           "CommonJS",
+		"moduleResolution":                 "Node",
+		"strict":                           false,
+		"rootDir":                          "./",
+		"baseUrl":                          "./",
+		"esModuleInterop":                  true,
+		"forceConsistentCasingInFileNames": false,
+
+		"outDir":                           "./_build_",
+		"declaration":                      true,
+		"declarationDir":                   "./dist",
+
+		"experimentalDecorators":           true,
+		"emitDecoratorMetadata":            true,
+		"paths":                            {
+			"@classes/*": [
+				"./src/classes/*"
+			],
+			"@helpers/*":  [
+				"./src/helpers/*"
+			],
+			"@lib/*":     [
+				"./src/lib/*"
+			],
+			"@shared/*":  [
+				"./src/shared/*"
+			],
+			"@client/*":  [
+				"./src/client/*"
+			],
+			"@middleware/*":  [
+				"./src/middleware/*"
+			],
+			"@decorators/*":  [
+				"./src/decorators/*"
+			],
+			"@types/*":    [
+				"./src/types/*"
+			],
+			"@plugins/*":  [
+				"./src/plugins/*"
+			],
+			"@server/*":  [
+				"./src/server/*"
+			],
+			"@msg/*":     [
+				"./src/messages/*"
+			],
+			"@root/*":  [
+				"./src/*"
+			]
+		}
+	},
+	"include":         [
+		"src/**/*.ts"
+	],
+	"exclude":         [
+		"./compile.ts",
+		"node_modules",
+		"./src/samples",
+		"./node_modules",
+		"studio",
+		"junk",
+		"./junk/**/*",
+		"junk",
+		"./gui-client",
+		"./src/build"
+	]
+}
+

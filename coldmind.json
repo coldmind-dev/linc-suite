@@ -1,0 +1,26 @@
+{
+	"product": {
+		"name": "Linc Core",
+		"version": "1.0.0"
+	},
+	"server": {
+		"port": 3000,
+		"host": "localhost"
+	},
+	"development": {
+    "rootDir": "./",
+    "tls": {
+		"certDir": "certs/",
+		"keyFile": "key.pem",
+		"certFile": "cert.pem"
+    }
+  },
+  "production": {
+    "rootDir": "/path/to/prod",
+    "tls": {
+      "certDir": "certs",
+      "keyFile": "prod-key.pem",
+      "certFile": "prod-cert.pem"
+    }
+  }
+}
