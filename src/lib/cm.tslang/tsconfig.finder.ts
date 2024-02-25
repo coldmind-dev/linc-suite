@@ -72,7 +72,8 @@ export function grabConfig<T = any>(filename: TCMBuildFilenames | string): T {
 		result = loadJsonConfig(filename).fileContent;
 	}
 	catch (err) {
-		console.error(`Error reading tsconfig.json: ${ err }`);
+		console.error(`Error reading: ${TCMBuildFilenames[filename]}: ${ err }`);
+		throw err;
 	}
 
 	return result;

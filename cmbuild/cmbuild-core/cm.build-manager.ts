@@ -25,6 +25,7 @@ import { TCMBuildFilenames }     from "./types/cm.filenames.const";
 import { grabConfig }            from "../../src/lib/cm.tslang/tsconfig.finder";
 import { TCMBuildModuleFormat }  from "./types/cm.module-format.type";
 import { rollup }                from "rollup";
+import * as fs                   from "fs";
 
 export interface IBundleInputOptions {
 	input: string | string[];
@@ -40,17 +41,37 @@ export interface ICMBuildHooks {
 export type TCPlugin = Partial<Plugin>;
 
 export class CMBuildManager {
-	private _tsConfig: ITSConfig;
+	private _tsConfig: ITSConfig = {};
+	private _packageConfig: any = {};
+
 	private configurations: ICMBuildBundleOptions[] = [];
 	private hooks: ICMBuildHooks;
 
 	constructor(hooks?: ICMBuildHooks) {
 		this.hooks          = hooks || {};
+		this.loadConfigFiles();
+	}
 
-		this._tsConfig = grabConfig<ITSConfig>(TCMBuildFilenames.TSConfig);
+	/**
+	 * Load configuration files
+	 */
+	async loadConfigFiles(): Promise<void> {
+		try {
+			this._tsConfig = grabConfig<ITSConfig>(TCMBuildFilenames.TSConfig);
+			this._packageConfig = grabConfig<ITSConfig>(TCMBuildFilenames.PackageJson);
+			this._packageConfig = grabConfig<ITSConfig>(TCMBuildFilenames.PackageJson);
+
+		} catch (err) {
+			console.log('Error', err);
+			throw err;
+		}
 	}
 
 	get tsConfig(): ITSConfig {
+		return this._tsConfig || {};
+	}
+
+	get packageConfig(): ITSConfig {
 		return this._tsConfig || {};
 	}
 
@@ -81,7 +102,7 @@ export class CMBuildManager {
 	 * Encapsulated cmbuild-core logic into a separate async
 	 * function for clarity and reusability
 	 *
-	 * @param {IBundleOptions} options
+	 * @param {ICMBuildBundleOptions} options
 	 * @returns {Promise<void>}
 	 */
 	async buildBundle(options: ICMBuildBundleOptions): Promise<void> {
@@ -89,6 +110,11 @@ export class CMBuildManager {
 		if (options.output.format === TCMBuildModuleFormat.IIFE && !options.output.name) {
 			throw new Error(`Output name is required for IIFE format in ${ options.input.input }`);
 		}
+
+		// Prepare the bundle
+		options.input.input = fs.resolve( options.input.input || '';
+
+
 
 		const bundle = await rollup(options.input);
 		await bundle.write(options.output);

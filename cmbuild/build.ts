@@ -20,7 +20,7 @@ const buildManager = new CMBuildManager(
 buildManager.addConfiguration(
 	new CMBuildBundleOptions(
 		{
-			input  : 'linc.client-cmbuild.ts',
+			input  : 'linc.client-build.ts',
 			plugins: [ ts() ],
 		},
 		{
@@ -33,11 +33,11 @@ buildManager.addConfiguration(
 
 buildManager.addConfiguration(
 	new CMBuildBundleOptions({
-			input  : 'src/server.ts',
+			input  : 'server.ts',
 			plugins: [ ts() ],
 		},
 		{
-			file  : 'dist/server-bundle.js',
+			file  : 'server-bundle.js',
 			format: TCMBuildModuleFormat.CommonJS,
 		}
 	)

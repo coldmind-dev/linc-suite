@@ -45,6 +45,11 @@ export class Logger {
 		return this;
 	}
 
+	/**
+	 * Get the instance of the Logger
+	 *
+	 * @returns {Logger}
+	 */
 	public static getInstance(): Logger {
 		if (!this.instance) {
 			this.instance = new Logger();
