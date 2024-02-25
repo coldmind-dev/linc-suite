@@ -46,6 +46,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LincAppServer = exports.createServerCore = void 0;
 const http = __importStar(require("http"));
+const server_1 = require("@root/server");
 /**
  * Create a new HTTP Server
  *
@@ -60,6 +61,9 @@ exports.createServerCore = createServerCore;
 class LincAppServer {
     constructor(port, localBinding = "localhost") {
         this.httpServer = (0, exports.createServerCore)(port, localBinding);
+        const server = server_1.LincServer.fromConfiguration({
+            httpServer: this.httpServer
+        });
     }
     get ServerCore() {
         return this.httpServer;
@@ -69,3 +73,4 @@ class LincAppServer {
     }
 }
 exports.LincAppServer = LincAppServer;
+LincAppServer.createServer(8080, "localhost");

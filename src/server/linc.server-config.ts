@@ -21,7 +21,7 @@
  */
 
 import { log }           from "@shared/linc.logger";
-import { HttpServer }    from "../types/common.types";
+import { HttpServer }    from "@root/types/linc.common.types";
 import { ServerOptions } from "ws";
 import { TServerPort }    from "@server/linc.property.types";
 
@@ -31,8 +31,8 @@ export interface IServerConfig {
 	httpServer?: HttpServer;
 	port?: TServerPort,
 	httpServerInstance?: HttpServer;
-	pingIntervalMs: number;
-	maxMissedPings: number;
+	pingIntervalMs?: number;
+	maxMissedPings?: number;
 }
 
 export type TServerConfig = IServerConfig

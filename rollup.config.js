@@ -3,7 +3,7 @@ import ts from 'rollup-plugin-ts';
 
 export default [
 	{
-		input: './src/client.ts',
+		input: './src/linc.client-cmbuild.ts',
 		output: {file: './dist/index.js', format: 'cjs'},
 		plugins: [ts()]
 	},

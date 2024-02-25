@@ -7,7 +7,7 @@ import { TCloseEvent } from "../../shared";
  */
 
 import { ILincPlugin } from "../../plugins/linc.plugin.type";
-import { LincPlugin }  from "../../@decorators/@linc.plugin";
+import { LincPlugin }  from "../../decorators/@linc.plugin";
 import { LincServer }  from "../../server/linc.server";
 import { TSocketError }     from "../../shared";
 import { TMessageEvent }    from "../../shared";

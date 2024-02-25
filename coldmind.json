@@ -3,6 +3,9 @@
 		"name": "Linc Core",
 		"version": "1.0.0"
 	},
+  "paths": {
+    "build-server": "spackel-build-server"
+  }, 
 	"server": {
 		"port": 3000,
 		"host": "localhost"

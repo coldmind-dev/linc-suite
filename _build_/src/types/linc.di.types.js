@@ -21,7 +21,7 @@
  * or the use or other dealings in the software.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Service = exports.ServerApp = exports.Client = exports.registerSingletonAs = void 0;
+exports.Service = exports.ServerApp = exports.Client = exports.registerSingletonAs = exports.Singleton = exports.Injectable = void 0;
 const tsyringe_1 = require("tsyringe");
 /**
  * Decorator that marks a class as injectable.
@@ -32,6 +32,7 @@ function Injectable() {
         (0, tsyringe_1.injectable)()(constructor);
     };
 }
+exports.Injectable = Injectable;
 /**
  * Decorator that marks a class as a singleton and registers it in the DI container.
  */
@@ -40,6 +41,7 @@ function Singleton() {
         (0, tsyringe_1.singleton)()(constructor);
     };
 }
+exports.Singleton = Singleton;
 /**
  * Registers the class as a singleton in the DI container and tags it as a specific type.
  * @param type The type of class being registered (e.g., 'Client', 'Server', 'Service').

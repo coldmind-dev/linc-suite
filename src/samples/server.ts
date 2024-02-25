@@ -12,7 +12,7 @@ import { TCloseEvent }      from "../shared";
 import { TSocketError }     from "../shared";
 import { TMessageEvent }    from "../shared";
 import { TSocketEvent }     from "../shared/linc.event.types";
-import { LincPlugin }       from "../@decorators/@linc.plugin";
+import { LincPlugin }       from "../decorators/@linc.plugin";
 import { ILincServerEvent } from "../server/linc.server-event";
 
 const port = process.env.PORT || 8080;

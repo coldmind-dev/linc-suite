@@ -13,7 +13,7 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  */
-import { TId } from "@server/link.server.type";
+import { TId } from "@server/link.server.types";
 
 export interface ILincServerEvent<T = any> {
 	type: TId;

@@ -20,8 +20,9 @@
  * or the use or other dealings in the software.
  */
 
-import { HttpServer } from "../../types/common.types";
+import { HttpServer } from "@root/types/linc.common.types";
 import * as http      from "http";
+import { LincServer } from "@root/server";
 
 // Settings are the available settings for the app server
 export interface IAppServerSettings {
@@ -52,9 +53,16 @@ export class LincAppServer {
 
 	constructor(port: number, localBinding: string = "localhost") {
 		this.httpServer = createServerCore(port, localBinding);
+		const server = LincServer.fromConfiguration(
+			{
+				httpServer: this.httpServer
+			}
+		);
 	}
 
 	static createServer(port: number, localBinding: string = "localhost"): LincAppServer {
 		return new LincAppServer(port, localBinding);
 	}
 }
+
+LincAppServer.createServer(8080, "localhost");

@@ -31,7 +31,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LincPluginManager = void 0;
-const linc_di_types_1 = require("../types/linc.di.types");
+const linc_di_types_1 = require("@root/types/linc.di.types");
 const tsyringe_1 = require("tsyringe");
 const linc_global_1 = require("@root/linc.global");
 const cm_result_1 = require("@lib/cm.common/cm.result");

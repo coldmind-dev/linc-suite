@@ -20,7 +20,7 @@
  * or the use or other dealings in the software.
  */
 
-import { IResult } from "@lib/cm.common/@types/cm.result.type";
+import { IResult } from "@lib/cm.common/tstypes/cm.result.type";
 
 export class CMResult<T = any, E = any> implements IResult<T, E> {
 	public success: boolean;

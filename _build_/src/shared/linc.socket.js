@@ -15,7 +15,7 @@ const line_socket_close_codes_2 = require("@shared/line.socket-close-codes");
 const linc_event_types_1 = require("@shared/linc.event.types");
 const cm_array_1 = require("@lib/cm.common/cm.array");
 const linc_global_1 = require("@root/linc.global");
-const linc_state_type_1 = require("@root/types/linc.state.type");
+const linc_state_types_1 = require("@root/types/linc.state.types");
 /**
  * Represents a message that is queued for sending
  */
@@ -46,8 +46,8 @@ class LincSocket {
     constructor(url, protocols) {
         this.url = url;
         this.protocols = protocols;
-        this.f_prevState = linc_state_type_1.LincState.Closed;
-        this.f_state = linc_state_type_1.LincState.Closed;
+        this.f_prevState = linc_state_types_1.LincState.Closed;
+        this.f_state = linc_state_types_1.LincState.Closed;
         this.awaitingAck = new Map();
         this.messageQueue = new cm_array_1.CMArray();
         this.queueMessages = true;

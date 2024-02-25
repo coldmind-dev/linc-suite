@@ -20,8 +20,8 @@ import { TLincServerEvent }      from "@shared/linc.event.types";
 import { TSocketError }          from "@shared/linc.event.types";
 import { CMArray }               from "@lib/cm.common/cm.array";
 import { isNode }                from "@root/linc.global";
-import { ILincSocket }           from "@shared/linc.socket.type";
-import { LincState }             from "@root/types/linc.state.type";
+import { ILincSocket } from "@shared/linc.socket.type";
+import { LincState }   from "@root/types/linc.state.types";
 
 // TODO: Move to separate file
 

@@ -20,7 +20,7 @@
  * or the use or other dealings in the software.
  */
 
-import { HttpServer }    from "../types/common.types";
+import { HttpServer }    from "@root/types/linc.common.types";
 import { ServerOptions } from "ws";
 
 export interface IPortRange {

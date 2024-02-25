@@ -54,20 +54,24 @@
 			]
 		}
 	},
+	"cmbuild":        {
+		"sourceRoot":  "./src",
+		"buildTarget":  "./build"
+	},
 	"include":         [
 		"src/**/*.ts"
 	],
 	"exclude":         [
-		"./compile.ts",
-		"node_modules",
+		"**/_exclude/**",
+		"./node_modules",
 		"./src/samples",
 		"./node_modules",
 		"studio",
 		"junk",
-		"./junk/**/*",
+		".     #**/junk/**/*",
 		"junk",
 		"./gui-client",
-		"./src/build"
+		"./src/cm"
 	]
 }
 

@@ -27,7 +27,7 @@ import { IServerConfig }                                                   from 
  * Decorator that marks a class as injectable.
  * It registers the class in the DI container without specifying it as a singleton.
  */
-function Injectable(): ClassDecorator {
+export function Injectable(): ClassDecorator {
 	return function (constructor: any) {
 		tsInjectable()(constructor);
 	};
@@ -36,7 +36,7 @@ function Injectable(): ClassDecorator {
 /**
  * Decorator that marks a class as a singleton and registers it in the DI container.
  */
-function Singleton(): ClassDecorator {
+export function Singleton(): ClassDecorator {
 	return function (constructor: any) {
 		tsSingleton()(constructor);
 	};
