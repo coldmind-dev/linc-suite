@@ -5,7 +5,7 @@
  */
 
 import { fromJson }     from "@shared/helpers/json-parser.helper";
-import { newMsgId }     from "@root/shared/linc.message.utils";
+import { newMsgId }     from "@shared/linc.message.utils";
 
 export interface ILincMessage {
 	type: string;

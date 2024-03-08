@@ -20,7 +20,9 @@
  * or the use or other dealings in the software.
  */
 
-import { LincSocket }  from "@shared/linc.socket";
+import { LincSocket }   from "@shared/linc.socket";
+import { DEFAULT_PORT } from "../linc.config";
+import CmUrl            from "@lib/cm.net/cm.url";
 
 
 export interface ILincClient {
@@ -32,7 +34,7 @@ export class LincClient extends LincSocket implements ILincClient {
 	private _port?: number;
 	private _socket: LincSocket;
 
-	constructor() {
+	constructor(url?: string) {
 		super();
 	}
 
@@ -41,7 +43,27 @@ export class LincClient extends LincSocket implements ILincClient {
 		return Promise.resolve();
 	}
 
-	static fromPort(port: number): LincClient {
-		return new LincClient(`ws://localhost:{port}`);
+	static fromUrl(url: string): LincClient {
+		let wsUrl = "";
+
+		try {
+			const urlObj = new CmUrl(url);
+
+			let protocol = urlObj?.protocol.toLowerCase();
+
+			if (!protocol) protocol = "ws"
+
+			if (!["ws", "wss", "http", "https"].includes(protocol)) {
+				throw new Error("Invalid protocol");
+			}
+
+			wsUrl = urlObj.toString();
+
+		} catch (e) {
+			console.error("Invalid URL:: ", e);
+			return null;
+		}
+
+		return new LincClient(wsUrl);
 	}
 }

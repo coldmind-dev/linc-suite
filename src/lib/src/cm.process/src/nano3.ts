@@ -5,8 +5,8 @@
  */
 
 import { EventEmitter } from "events";
-import { CMError }      from "~/error/cm.error";
-import { TErrorCodes }  from "~/error/cm.error.types";
+import { CMError }      from "./error/cm.error";
+import { TErrorCodes }  from "./error/cm.error.types";
 
 interface CancellationToken {
 	isCancellationRequested: boolean;

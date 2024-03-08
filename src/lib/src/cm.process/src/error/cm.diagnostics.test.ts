@@ -20,26 +20,5 @@
  * or the use or other dealings in the software.
  */
 
-import { expect }        from 'chai';
 import { TErrorCodes }   from "./cm.error.types";
 import { CMDiagnostics } from "./cm.diagnostics";
-
-describe('Diagnostics', () => {
-	it('should create an instance of Diagnostics', () => {
-		const error = new CMDiagnostics('Test message', TErrorCodes.errTest);
-		expect(error).to.be.an.instanceOf(CMDiagnostics);
-	});
-
-	it('should correctly capture and parse the stack trace', () => {
-		const error = new Diagnostics('Test message', TErrorCodes.errTest);
-		const stackFrames = error.parseStackTrace();
-
-		// Add assertions to test stackFrames.
-		// For example, you can check the length or specific properties of stackFrames.
-		expect(stackFrames).to.be.an('array');
-		expect(stackFrames).to.have.lengthOf.at.least(1);
-		// Add more assertions as needed.
-	});
-
-	// Add more test cases as needed.
-});

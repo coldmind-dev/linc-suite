@@ -21,7 +21,7 @@
  */
 
 import { log }           from "@shared/linc.logger";
-import { HttpServer }    from "@root/types/linc.common.types";
+import { HttpServer }    from "@CmTypes/linc.common.types";
 import { ServerOptions } from "ws";
 import { TServerPort }    from "@server/linc.property.types";
 

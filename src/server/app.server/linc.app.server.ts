@@ -20,9 +20,9 @@
  * or the use or other dealings in the software.
  */
 
-import { HttpServer } from "@root/types/linc.common.types";
+import { HttpServer } from "@CmTypes/linc.common.types";
 import * as http      from "http";
-import { LincServer } from "@root/server";
+import { LincServer } from "@server/linc.server";
 
 // Settings are the available settings for the app server
 export interface IAppServerSettings {
@@ -64,5 +64,3 @@ export class LincAppServer {
 		return new LincAppServer(port, localBinding);
 	}
 }
-
-LincAppServer.createServer(8080, "localhost");

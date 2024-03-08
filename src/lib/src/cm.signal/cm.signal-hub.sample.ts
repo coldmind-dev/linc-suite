@@ -1,5 +1,3 @@
-import { CMSignalHub } from "@root/lib/cm.signal/cm.signal-hub";
-
 /**
  * Copyright (c) 2024 Coldmind AB
  *
@@ -21,6 +19,7 @@ import { CMSignalHub } from "@root/lib/cm.signal/cm.signal-hub";
  * contract, tort or otherwise, arising from, out of or in connection with the software
  * or the use or other dealings in the software.
  */
+import { CMSignalHub } from "@lib/cm.signal/cm.signal-hub";
 
 // Create an instance of the EnhancedSubject
 const dataSubject = new CMSignalHub<string>();

@@ -25,7 +25,7 @@ import * as http                     from 'http';
 import WebSocket                     from 'ws';
 import { Server as WebSocketServer } from 'ws';
 import { ServerOptions }             from "ws";
-import { HttpServer }                from "@root/types/linc.common.types";
+import { HttpServer }                from "@CmTypes/linc.common.types";
 import { LincMessage }               from "@msg/linc.message";
 import { ILincMessage }              from "@msg/linc.message";
 import { ClientInfo }                from "@classes/client-info";
@@ -51,7 +51,7 @@ import { ILincServerEvent }  from "@server/linc.server-event";
 import { LincEventType }     from "@server/linc.server-event";
 import { LincEventName }     from "@server/linc.server-event";
 import { LincServerEvent }   from "@server/linc.server-event";
-import { ServerApp }         from "@root/types/linc.di.types";
+import { ServerApp }         from "@CmTypes/linc.di.types";
 import { CMSignalHub }       from "@lib/cm.signal/cm.signal-hub";
 import { Subscription }      from "@lib/cm.signal/cm.signal-hub";
 

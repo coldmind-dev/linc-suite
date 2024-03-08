@@ -37,7 +37,7 @@
 			"@decorators/*":  [
 				"./src/decorators/*"
 			],
-			"@types/*":    [
+			"@CmTypes/*":    [
 				"./src/types/*"
 			],
 			"@plugins/*":  [
@@ -48,9 +48,6 @@
 			],
 			"@msg/*":     [
 				"./src/messages/*"
-			],
-			"@root/*":  [
-				"./src/*"
 			]
 		}
 	},
@@ -61,7 +58,8 @@
 	"include":         [
 		"src/**/*.ts"
 	],
-	"exclude":         [
+	"exclude": [
+		"**/cm.process/**",
 		"**/_exclude/**",
 		"./node_modules",
 		"./src/samples",

@@ -6,11 +6,11 @@
  * regarding this software.
  */
 
-import { TMsgEvent }   from "@shared/linc.event.types";
-import { TCloseEvent } from "@shared/linc.event.types";
+import { TMsgEvent }     from "@shared/linc.event.types";
+import { TCloseEvent }   from "@shared/linc.event.types";
+import { ILincMessage }  from "@msg/linc.message";
 import { TLincDataType } from "@shared/linc.event.types";
-import { ILincMessage }  from "@root/messages";
-import { LincState }     from "@root/types/linc.state.types";
+import { LincState }     from "@CmTypes/linc.state.types";
 
 /**
  * Represents a WebSocket connection, abstracting the environment-specific details to provide

@@ -19,9 +19,9 @@
  * contract, tort or otherwise, arising from, out of or in connection with the software
  * or the use or other dealings in the software.
  */
-import { isNode } from "@root/linc.global";
 
-// IHttpServer.ts
+import { getIsNode } from "../../linc.global";
+
 interface HttpRequest {
 	method?: string;
 	url?: string;
@@ -43,7 +43,7 @@ interface IHttpServer {
 
 // ServerFactory.ts
 function createServer(): IHttpServer {
-	if (isNode) {
+	if (getIsNode()) {
 		let http = require("http");
 		return new NodeHttpServer(http);
 	} else {

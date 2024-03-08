@@ -5,7 +5,7 @@
 	"main": "cmbuild.js",
 	"types": "index.d.ts",
 	"scripts": {
-		"build": "tsc && node _after_build.js rollup -c --bundleConfigAsCjs",
+		"build": "tsc && rollup -c --bundleConfigAsCjs",
 		"build:prod": "rollup -c --bundleConfigAsCjs",
 		"server:sample": "ts-node -P ./tsconfig.json -r tsconfig-paths/register ./src/samples/server.ts",
 		"make": "rm -rf dist && tsc",

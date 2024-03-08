@@ -21,9 +21,9 @@
  */
 
 import { EventEmitter } from "events";
-import { CMError }      from "~/error/cm.error";
-import { TErrorCodes }  from "~/error/cm.error.types";
-import { TNanoEvent }   from "~/cm.middleware.types";
+import { CMError }      from "./error/cm.error";
+import { TErrorCodes }  from "./error/cm.error.types";
+import { TNanoEvent }   from "./cm.middleware.types";
 
 interface ICMError {
 	message: string;

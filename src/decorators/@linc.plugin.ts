@@ -25,8 +25,8 @@ import { container as tsyringeContainer } from 'tsyringe';
 import { DependencyContainer }            from "tsyringe";
 import { InjectionToken }                 from "tsyringe";
 import { container }                      from "tsyringe";
-import { MetaKeys }                       from "@root/linc.global";
 import { TMiddlewareFunc }                from "@middleware/middleware-func";
+import { MetaKeys }                       from "../linc.global";
 
 export type TCtor<T = any> = { new(...args: any[]): T };
 

@@ -20,7 +20,7 @@
  * or the use or other dealings in the software.
  */
 
-import { CMSignalHub } from "@root/lib/cm.signal/cm.signal-hub";
+import { CMSignalHub } from "../../src/cm.signal/cm.signal-hub";
 
 describe('CMSignalHub', () => {
 	it('should allow subscription and receive emitted values', done => {

@@ -8,7 +8,7 @@ import "reflect-metadata";
 import { container }        from "tsyringe";
 import { LincServer }       from "../server/linc.server";
 import { TCloseEvent }      from "../shared";
-import { TSocketError }     from "../shared";3
+import { TSocketError }     from "../shared";
 import { TMsgEvent }    from "../shared";
 import { TSocketEvent } from "../shared/linc.event.types";
 import { ILincServerEvent } from "../server/linc.server-event";
@@ -16,12 +16,9 @@ import { LincPlugin }       from "../decorators/@linc.plugin";
 
 const port = process.env.PORT || 8080;
 
-
-
 export interface ILincPlugin {
 	initialize: (server?: LincServer) => Promise<void>;
 }
-
 
 @LincPlugin({})
 export class ChatPlugin implements ILincPlugin {

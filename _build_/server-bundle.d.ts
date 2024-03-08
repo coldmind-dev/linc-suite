@@ -75,45 +75,6 @@ interface IReconnectStrategy {
     maxReconnectInterval?: number;
 }
 /**
- * Server Client Connection Information
- * attached to each client connection
- */
-declare class ClientInfo<T = any> {
-    ip: string;
-    lastActivity: number;
-    isAuthenticated: boolean;
-    session: T | null;
-    isAlive: boolean;
-    missedPings: number;
-    constructor(ip: string);
-    updateActivity(): void;
-}
-/**
- * Copyright (c) 2024 Coldmind AB
- *
- * @author Patrik Forsberg
- * @contact patrik.forsberg@coldmind.com
- * @date 2024-02-16
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * The software is provided "as is", without warranty of any kind, express or implied,
- * including but not limited to the warranties of merchantability, fitness for a
- * particular purpose and noninfringement. In no event shall the authors or copyright
- * holders be liable for any claim, damages or other liability, whether in an action of
- * contract, tort or otherwise, arising from, out of or in connection with the software
- * or the use or other dealings in the software.
- */
-declare class CmEventError {
-    error: any;
-    constructor(error: any);
-}
-/**
  * Copyright (c) 2024 Coldmind AB
  *
  * @author Patrik Forsberg
@@ -189,32 +150,6 @@ type TReconnectEvent = {
     attempt?: number;
 };
 /**
- * Copyright (c) 2024 Coldmind AB
- *
- * @author Patrik Forsberg
- * @contact patrik.forsberg@coldmind.com
- * @date 2024-02-03
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * The software is provided "as is", without warranty of any kind, express or implied,
- * including but not limited to the warranties of merchantability, fitness for a
- * particular purpose and noninfringement. In no event shall the authors or copyright
- * holders be liable for any claim, damages or other liability, whether in an action of
- * contract, tort or otherwise, arising from, out of or in connection with the software
- * or the use or other dealings in the software.
- */
-declare const TMsgType: {
-    Ding: string;
-    Dong: string;
-    Prompt: string;
-};
-/**
  * Copyright (c) 2021 Patrik Forsberg <patrik.forsberg@coldmind.com> - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
@@ -249,7 +184,7 @@ interface ILincSocket {
     sendMessage(message: ILincMessage): void;
 }
 declare class LincSocket implements ILincSocket {
-    url: string;
+    url?: string;
     protocols?: string | string[];
     private f_prevState;
     private f_state;
@@ -266,8 +201,14 @@ declare class LincSocket implements ILincSocket {
     private maxReconnectAttempts;
     private emitErrors;
     private listeners;
+    /**
+     * Initializes a new instance of the UniversalWebSocket class.
+     * @param {string} url - The URL to which to connect; this should be the URL to which the WebSocket server will respond.
+     * @param {string | string[]} [protocols] - Either a single protocol string or an array of protocol strings. These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified protocol).
+     */
+    constructor(url?: string, protocols?: string | string[]);
     //////////////////////////////////////////////////////////////////////////
-    //
+    o: any; //
     // Event handlers
     //
     //////////////////////////////////////////////////////////////////////////
@@ -285,12 +226,6 @@ declare class LincSocket implements ILincSocket {
      * @param {number} interval
      */
     triggerReconnectEvent(attempt?: number): void;
-    /**
-     * Initializes a new instance of the UniversalWebSocket class.
-     * @param {string} url - The URL to which to connect; this should be the URL to which the WebSocket server will respond.
-     * @param {string | string[]} [protocols] - Either a single protocol string or an array of protocol strings. These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified protocol).
-     */
-    constructor(url: string, protocols?: string | string[]);
     //
     // State
     //
@@ -507,12 +442,42 @@ declare function toJson<T extends object>(obj: T): string;
  * @returns {T | null}
  */
 declare function fromJson<T = any>(jsonString: string): T;
+/**
+ * Copyright (c) 2024 Coldmind AB
+ *
+ * @author Patrik Forsberg
+ * @contact patrik.forsberg@coldmind.com
+ * @date 2024-02-03
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * The software is provided "as is", without warranty of any kind, express or implied,
+ * including but not limited to the warranties of merchantability, fitness for a
+ * particular purpose and noninfringement. In no event shall the authors or copyright
+ * holders be liable for any claim, damages or other liability, whether in an action of
+ * contract, tort or otherwise, arising from, out of or in connection with the software
+ * or the use or other dealings in the software.
+ */
+declare const TMsgType: {
+    Ding: string;
+    Dong: string;
+    Prompt: string;
+};
 interface ILincClient {
     connectClient(host: string, port: number): Promise<any>;
 }
 declare class LincClient extends LincSocket implements ILincClient {
-    connectClient(host: string, port: number): Promise<any>;
-    static fromPort(port: number): LincClient;
+    private _host?;
+    private _port?;
+    private _socket;
+    constructor(url?: string);
+    connectClient(host?: string, port?: number): Promise<any>;
+    static fromUrl(url: string): LincClient;
 }
 type HttpServer = http.Server;
 interface IPortRange {
@@ -601,6 +566,20 @@ interface ILincPlugin {
     initialize: (server?: LincServer) => Promise<void>;
 }
 type TLincPlugin = ILincPlugin;
+/**
+ * Server Client Connection Information
+ * attached to each client connection
+ */
+declare class ClientInfo<T = any> {
+    ip: string;
+    lastActivity: number;
+    isAuthenticated: boolean;
+    session: T | null;
+    isAlive: boolean;
+    missedPings: number;
+    constructor(ip: string);
+    updateActivity(): void;
+}
 type TId = string | number | symbol;
 interface ILincServerEvent<T = any> {
     type: TId;
@@ -779,6 +758,31 @@ declare class LincServer {
      */
     private startDingDong;
     sendMessage(ws: WebSocket, msgType: string, data?: any): void;
+}
+/**
+ * Copyright (c) 2024 Coldmind AB
+ *
+ * @author Patrik Forsberg
+ * @contact patrik.forsberg@coldmind.com
+ * @date 2024-02-16
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * The software is provided "as is", without warranty of any kind, express or implied,
+ * including but not limited to the warranties of merchantability, fitness for a
+ * particular purpose and noninfringement. In no event shall the authors or copyright
+ * holders be liable for any claim, damages or other liability, whether in an action of
+ * contract, tort or otherwise, arising from, out of or in connection with the software
+ * or the use or other dealings in the software.
+ */
+declare class CmEventError {
+    error: any;
+    constructor(error: any);
 }
 type TMiddlewareFunc = (ctx: IMiddlewareContext, next: TNextFunc) => Promise<IMiddlewareContext>;
 /**

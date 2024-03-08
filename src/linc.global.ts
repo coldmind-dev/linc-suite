@@ -26,6 +26,11 @@ export enum MetaKeys {
 	Service    = "service",
 	Repository = "repository",
 	Middleware = "middleware",
+	Undefined  = "undefined"
 }
 
-export const isNode = typeof process !== "undefined" && process.versions && process.versions.node;
+export const isNode = !!( typeof process !== MetaKeys.Undefined && process.versions && process.versions.node )
+
+export function getIsNode(): boolean {
+	return isNode;
+}

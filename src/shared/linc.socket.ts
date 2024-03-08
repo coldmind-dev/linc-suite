@@ -18,12 +18,12 @@ import { TReconnectEvent }            from "@shared/linc.event.types";
 import { TMsgEvent }                  from "@shared/linc.event.types";
 import { TLincServerEvent }           from "@shared/linc.event.types";
 import { TSocketError }               from "@shared/linc.event.types";
-import { isNode }                     from "@root/linc.global";
 import { ILincSocket }                from "@shared/linc.socket.type";
-import { LincState }                  from "@root/types/linc.state.types";
+import { LincState }                  from "@CmTypes/linc.state.types";
 import { TQueuedMessage }             from "@shared/linc.queued-message";
 import { QueuedMessage }              from "@shared/linc.queued-message";
 import { CMArray }                    from "@lib/cm.common/cm.array";
+import { getIsNode }                  from "../linc.global";
 
 // TODO: Move to separate file
 
@@ -58,6 +58,7 @@ export class LincSocket implements ILincSocket {
 	private emitErrors: boolean = false;
 
 	private listeners: { [ key: string ]: ( (...args: any[]) => void )[] } = {};
+
 	/**
 	 * Initializes a new instance of the UniversalWebSocket class.
 	 * @param {string} url - The URL to which to connect; this should be the URL to which the WebSocket server will respond.
@@ -71,7 +72,7 @@ export class LincSocket implements ILincSocket {
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	//
+	o	//
 	// Event handlers
 	//
 	//////////////////////////////////////////////////////////////////////////
@@ -511,7 +512,7 @@ export class LincSocket implements ILincSocket {
 	 * @param dataType
 	 */
 	async send(data: any): Promise<any> {
-		if (isNode) {
+		if (getIsNode()) {
 			this.ws.send(data);
 		}
 		else {
@@ -547,7 +548,7 @@ export class LincSocket implements ILincSocket {
 	close(code: number = 1000, reason: string = ""): void {
 		log.debug("LincSocket :: close :: code ::", code, " :: reason ::", reason);
 
-		if (isNode) {
+		if (getIsNode()) {
 			this.ws.close(code, reason);
 		}
 		else {
