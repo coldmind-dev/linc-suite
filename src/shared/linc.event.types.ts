@@ -1,5 +1,3 @@
-import { SocketError } from "@classes/socket-error";
-
 /**
  * Copyright (c) 2024 Coldmind AB
  *
@@ -21,6 +19,8 @@ import { SocketError } from "@classes/socket-error";
  * contract, tort or otherwise, arising from, out of or in connection with the software
  * or the use or other dealings in the software.
  */
+
+import { SocketError } from "@root/classes";
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -59,7 +59,7 @@ export type TLincDataType = string | Blob | ArrayBufferLike | ArrayBufferView;
 
 export type TErrorEvent = { data?: TSocketError };
 
-export type TMessageEvent = { data: any }
+export type TMsgEvent = { data: any }
 
 export type TCloseEvent = { code?: number; reason?: string };
 

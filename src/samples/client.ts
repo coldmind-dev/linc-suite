@@ -5,9 +5,9 @@
  */
 
 import "reflect-metadata";
-import { LincClient }    from "@client/linc.client";
-import { TMessageEvent } from "@shared/linc.event.types";
-import { TCloseEvent }   from "@shared/linc.event.types";
+import { LincClient }  from "@client/linc.client";
+import { TMsgEvent }   from "@shared/linc.event.types";
+import { TCloseEvent } from "@shared/linc.event.types";
 
 const wsUrl = 'ws://localhost:8080';
 
@@ -21,8 +21,8 @@ wsClient.onOpen = () => {
 };
 
 // Listen for messages from the server
-wsClient.onMessage = (event: TMessageEvent) => {
-	console.log('Message from server:', JSON.stringify(event));
+wsClient.onMessage = (event: TMsgEvent) => {
+	console.log('************ Message from server:', JSON.stringify(event));
 };
 
 // Listen for possible errors

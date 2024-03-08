@@ -12,8 +12,8 @@ import { TSocketEvent }     from "@shared/linc.event.types";
 import { LincPlugin }       from "@decorators/@linc.plugin";
 import { ILincServerEvent } from "@server/linc.server-event";
 import { TCloseEvent }      from "@shared/linc.event.types";
-import { TSocketError }     from "@shared/linc.event.types";
-import { TMessageEvent }    from "@shared/linc.event.types";
+import { TSocketError } from "@shared/linc.event.types";
+import { TMsgEvent }    from "@shared/linc.event.types";
 
 const port = process.env.PORT || 8080;
 
@@ -36,7 +36,7 @@ export class ChatPlugin implements ILincPlugin {
 		console.log("ChatPlugin :: onError ***");
 	}
 
-	public onMessage(event: TMessageEvent): void {
+	public onMessage(event: TMsgEvent): void {
 		console.log("ChatPlugin :: onMessage ***")
 	}
 
@@ -79,7 +79,7 @@ async function run(port: any): Promise<void> {
 			onOpen    : (event: TSocketEvent) => {
 				console.log("::XREPO_ChatPlugin :: onOpen ***");
 			},
-			onMessage : (event: TMessageEvent) => {
+			onMessage : (event: TMsgEvent) => {
 				console.log("::XREPO_ChatPlugin :: onMessage ***");
 			},
 			onClose   : (event: TCloseEvent) => {

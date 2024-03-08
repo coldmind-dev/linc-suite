@@ -1,0 +1,39 @@
+{ "builds":[
+	{
+		"type":          "npm",
+		"name":          "Linc Client Build",
+		"baseOutputDir": "dist",
+		"stripComments": true,
+		"minify":        true,
+		"source":        [
+			"src/linc.client-build.ts"
+		],
+		"output":        {
+			"globalVar":    "LincClient",
+			"bundleName":   "client-bundle.js",
+			"bundleFormat": "es",
+			"npm":          {
+				"dir":     "client",
+				"package": "linc-client"
+			}
+		}
+	},
+	{
+		"name":          "Linc Server Build",
+		"stripComments": true,
+		"minify":        true,
+		"source":        [
+			"src/linc.server-build.ts"
+		],
+		"output":        {
+			"bundleName":   "server-bundle.js",
+			"bundleFormat": "cjs",
+			"globals":      {
+				"tsyringe": "tsyringe",
+				"ws":       "ws"
+			}
+		}
+	}
+]
+}
+

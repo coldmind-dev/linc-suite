@@ -25,12 +25,12 @@ export { log }                   from "./linc.logger";
 export { nonReConnectableCodes } from "./line.socket-close-codes";
 export { newMsgId }              from "./linc.message.utils";
 export { WebSocketCloseCode }    from "./line.socket-close-codes";
-export { TLincDataType }         from "./linc.event.types";
+/*export { TLincDataType }         from "./linc.event.types";
 export { TCloseEvent }           from "./linc.event.types";
 export { TReconnectEvent }       from "./linc.event.types";
 export { TMessageEvent }         from "./linc.event.types";
-export { TSocketError }          from "./linc.event.types";
-export { TLincServerEvent }      from "./linc.event.types";
+export { TSocketError }          from "./linc.event.types";*/
+export *  from "./linc.event.types";
 
 // Export all types from helper files
 export * from "./helpers/json-parser.helper";

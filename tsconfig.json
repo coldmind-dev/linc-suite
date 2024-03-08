@@ -11,7 +11,7 @@
 
 		"outDir":                           "./_build_",
 		"declaration":                      true,
-		"declarationDir":                   "./dist",
+		"declarationDir":                   "./_build_",
 
 		"experimentalDecorators":           true,
 		"emitDecoratorMetadata":            true,
@@ -23,7 +23,7 @@
 				"./src/helpers/*"
 			],
 			"@lib/*":     [
-				"./src/lib/*"
+				"./src/lib/src/*"
 			],
 			"@shared/*":  [
 				"./src/shared/*"
@@ -68,7 +68,7 @@
 		"./node_modules",
 		"studio",
 		"junk",
-		".     #**/junk/**/*",
+		"#**/junk/**/*",
 		"junk",
 		"./gui-client",
 		"./src/cm"

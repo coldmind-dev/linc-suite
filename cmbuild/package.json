@@ -1,0 +1,39 @@
+{
+	"name": "cm-linc",
+	"version": "1.0.17",
+	"description": "",
+	"main": "cmbuild.js",
+	"types": "index.d.ts",
+	"scripts": {
+		"build": "tsc && node _after_build.js rollup -c --bundleConfigAsCjs",
+		"build:prod": "rollup -c --bundleConfigAsCjs",
+		"server:sample": "ts-node -P ./tsconfig.json -r tsconfig-paths/register ./src/samples/server.ts",
+		"make": "rm -rf dist && tsc",
+		"test": "jest"
+	},
+	"keywords": [],
+	"author": "Coldmind AB",
+	"license": "Mozilla Public License 2.0",
+	"devDependencies": {
+		"@types/jest": "^29.5.12",
+		"@types/node": "^20.11.16",
+		"jest": "^29.7.0",
+		"rollup-plugin-ts": "^3.4.5",
+		"rollup-plugin-ts-paths": "^1.0.5",
+		"semver": "^7.6.0",
+		"ts-jest": "^29.1.2",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.3.3",
+		"@types/fs-extra": "^11.0.4",
+		"@types/uuid": "^9.0.8"
+	},
+	"dependencies": {
+		"fs-extra": "^11.2.0",
+		"reflect-metadata": "^0.2.1",
+		"rollup": "^4.12.0",
+		"tspath": "^1.2.10",
+		"tsyringe": "^4.8.0",
+		"uuid": "^9.0.1"
+	}
+}

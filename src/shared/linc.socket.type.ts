@@ -6,10 +6,11 @@
  * regarding this software.
  */
 
-import { TMessageEvent } from "@shared/linc.event.types";
-import { TCloseEvent }   from "@shared/linc.event.types";
+import { TMsgEvent }   from "@shared/linc.event.types";
+import { TCloseEvent } from "@shared/linc.event.types";
 import { TLincDataType } from "@shared/linc.event.types";
 import { ILincMessage }  from "@root/messages";
+import { LincState }     from "@root/types/linc.state.types";
 
 /**
  * Represents a WebSocket connection, abstracting the environment-specific details to provide
@@ -18,14 +19,16 @@ import { ILincMessage }  from "@root/messages";
  */
 export interface ILincSocket {
 	onOpen?: () => void;
-	onMessage?: (event: TMessageEvent) => void;
+	onMessage?: (event: TMsgEvent) => void;
 	onError?: (event: any) => void;
 	onClose?: (event: TCloseEvent) => void;
+
+	isOpen(): boolean;
 
 	connect(): void;
 	close(code?: number, reason?: string): void;
 
-	state: number;
+	state: LincState;
 
 	send(data: TLincDataType): void;
 	sendMessage(message: ILincMessage): void;

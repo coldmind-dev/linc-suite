@@ -1,0 +1,53 @@
+{ "builds":[
+	{
+		"type":          "npm",
+		"name":          "Linc Client Build",
+		"baseOutputDir": "dist",
+		"stripComments": true,
+		"minify":        true,
+		"source":        [
+			"src/linc.client-build.ts"
+		],
+		"output":        {
+			"globalVar":    "LincClient",
+			"bundleName":   "client-bundle.js",
+			"bundleFormat": "es",
+			"npm":          {
+				"dir":     "client",
+				"package": "linc-client"
+			},
+			/**
+			 * This will be the contents of the build directory
+			 * if is possible tp specify file contents here by using the "file" property
+			 * or to copy files from a template directory using the "copyFrom" property
+			 */
+			"packageTemplate": {
+				"copyFrom": "./templates/linc-client/*",
+				"file": {
+					"extends": "./templates/linc-client/package.json",
+					"filename": "package.json",
+					"main": "client-bundle.js",
+					"types": "client-bundle.d.ts"
+				}
+			}
+		}
+	},
+	{
+		"name":          "Linc Server Build",
+		"stripComments": true,
+		"minify":        true,
+		"source":        [
+			"src/linc.server-build.ts"
+		],
+		"output":        {
+			"bundleName":   "server-bundle.js",
+			"bundleFormat": "cjs",
+			"globals":      {
+				"tsyringe": "tsyringe",
+				"ws":       "ws"
+			}
+		}
+	}
+]
+}
+

@@ -10,18 +10,20 @@ import { log }                        from "@shared/linc.logger";
 import { newMsgId }                   from "@shared/linc.message.utils";
 import { IReconnectStrategy }         from "@client/linc.reconnect-strategy";
 import { DEFAULT_RECONNECT_STRATEGY } from "@client/linc.reconnect-strategy";
-import { nonReConnectableCodes } from "@shared/line.socket-close-codes";
-import { WebSocketCloseCode }    from "@shared/line.socket-close-codes";
-import { TLincDataType }         from "@shared/linc.event.types";
-import { TCloseEvent }           from "@shared/linc.event.types";
-import { TReconnectEvent }       from "@shared/linc.event.types";
-import { TMessageEvent }         from "@shared/linc.event.types";
-import { TLincServerEvent }      from "@shared/linc.event.types";
-import { TSocketError }          from "@shared/linc.event.types";
-import { CMArray }               from "@lib/cm.common/cm.array";
-import { isNode }                from "@root/linc.global";
-import { ILincSocket } from "@shared/linc.socket.type";
-import { LincState }   from "@root/types/linc.state.types";
+import { nonReConnectableCodes }      from "@shared/line.socket-close-codes";
+import { WebSocketCloseCode }         from "@shared/line.socket-close-codes";
+import { TLincDataType }              from "@shared/linc.event.types";
+import { TCloseEvent }                from "@shared/linc.event.types";
+import { TReconnectEvent }            from "@shared/linc.event.types";
+import { TMsgEvent }                  from "@shared/linc.event.types";
+import { TLincServerEvent }           from "@shared/linc.event.types";
+import { TSocketError }               from "@shared/linc.event.types";
+import { isNode }                     from "@root/linc.global";
+import { ILincSocket }                from "@shared/linc.socket.type";
+import { LincState }                  from "@root/types/linc.state.types";
+import { TQueuedMessage }             from "@shared/linc.queued-message";
+import { QueuedMessage }              from "@shared/linc.queued-message";
+import { CMArray }                    from "@lib/cm.common/cm.array";
 
 // TODO: Move to separate file
 
@@ -31,38 +33,13 @@ export interface IQueuedMessage {
 	reject: (reason?: any) => void;
 }
 
-export type TQueuedMessage = IQueuedMessage;
-
-/**
- * Represents a message that is queued for sending
- */
-export class QueuedMessage implements IQueuedMessage {
-	constructor(
-		public data: string,
-		public resolve: (value?: any) => void,
-		public reject: (reason?: any) => void
-	) {
-	}
-
-	/**
-	 * Creates a new QueuedMessage instance from a Promise, using the specified data and promise.
-	 *
-	 * @param {string} data
-	 * @param {Promise<any>} promise
-	 * @returns {QueuedMessage}
-	 */
-	static fromPromise(data: string, promise: Promise<any>): QueuedMessage {
-		return new QueuedMessage(data, () => promise, () => promise);
-	}
-}
-
 export type ILincMsgId = string;
 //export type TQueuedMessage = { data: ILincMessage, resolve: Function, reject: Function };
 export type TMessageAck = { resolve: Function, reject: Function };
 
 export class LincSocket implements ILincSocket {
-	f_prevState: LincState = LincState.Closed;
-	f_state: LincState     = LincState.Closed;
+	private f_prevState: LincState = LincState.Closed;
+	private f_state: LincState     = LincState.Closed;
 
 	private socket: WebSocket | undefined;
 	private ws: any;
@@ -81,6 +58,17 @@ export class LincSocket implements ILincSocket {
 	private emitErrors: boolean = false;
 
 	private listeners: { [ key: string ]: ( (...args: any[]) => void )[] } = {};
+	/**
+	 * Initializes a new instance of the UniversalWebSocket class.
+	 * @param {string} url - The URL to which to connect; this should be the URL to which the WebSocket server will respond.
+	 * @param {string | string[]} [protocols] - Either a single protocol string or an array of protocol strings. These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified protocol).
+	 */
+	constructor(
+		public url?: string,
+		public protocols?: string | string[]
+	) {
+		this.initReconnectStrategy();
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -88,10 +76,14 @@ export class LincSocket implements ILincSocket {
 	//
 	//////////////////////////////////////////////////////////////////////////
 	public onOpen?: () => void;
-	public onMessage?: (event: TMessageEvent) => void;
+	public onMessage?: (event: TMsgEvent) => void;
 	public onError?: (event: TSocketError) => void;
 	public onClose?: (event: TCloseEvent) => void;
 	public onReconnect?: (event: TReconnectEvent) => void;
+
+	public isOpen(): boolean {
+		return this.socket && this.socket.readyState === WebSocket.OPEN;
+	}
 
 	/**
 	 * Trigger a new reconnect event, if assigned
@@ -110,18 +102,6 @@ export class LincSocket implements ILincSocket {
 				}
 			);
 		}
-	}
-
-	/**
-	 * Initializes a new instance of the UniversalWebSocket class.
-	 * @param {string} url - The URL to which to connect; this should be the URL to which the WebSocket server will respond.
-	 * @param {string | string[]} [protocols] - Either a single protocol string or an array of protocol strings. These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified protocol).
-	 */
-	constructor(
-		public url: string,
-		public protocols?: string | string[]
-	) {
-		this.initReconnectStrategy();
 	}
 
 	//
@@ -220,7 +200,7 @@ export class LincSocket implements ILincSocket {
 			if (this.onOpen) this.onOpen();
 		});
 
-		this.ws.on(TLincServerEvent.MESSAGE, (data: TMessageEvent) => this.handleMessage(data));
+		this.ws.on(TLincServerEvent.MESSAGE, (data: TMsgEvent) => this.handleMessage(data));
 
 		this.ws.on(TLincServerEvent.ERROR, (error: any) => {
 			if (this.onError) {
@@ -237,7 +217,6 @@ export class LincSocket implements ILincSocket {
 	}
 
 	private triggerErrorEvent(event: Event): void {
-
 	}
 
 	/**
@@ -248,6 +227,7 @@ export class LincSocket implements ILincSocket {
 		if ( !this.socket) return;
 
 		this.socket.onopen = () => {
+			this.state = LincState.Open;
 			if (this.onOpen) this.onOpen();
 		};
 
@@ -266,6 +246,7 @@ export class LincSocket implements ILincSocket {
 		};
 
 		this.socket.onclose = (event: TCloseEvent) => {
+			this.state = LincState.Closed;
 			this.handleClose(event);
 		};
 	}
@@ -322,14 +303,14 @@ export class LincSocket implements ILincSocket {
 
 	/**
 	 * Handle close evenr
-	 * @param {TCloseEvent} event
+	 * @param {TCloseEvent} eventw
 	 */
 	handleClose(event: TCloseEvent): void {
 		log.debug("handleClose :: code ::", event.code, " :: reason ::", event.reason);
 		const reconnect = this.reconnectStrategy?.shouldReconnect;
 
 		if ( !reconnect) {
-			//
+			//f
 			// Dispatch event
 			//
 			if (this.onClose) {
@@ -345,11 +326,38 @@ export class LincSocket implements ILincSocket {
 	/**
 	 * Handles global WebSocket errors.
 	 *
-	 * @param {TMessageEvent} event
+	 * @param {TMsgEvent} event
 	 */
 	handleError(event: any): void {
-
 		console.log("handleError :: event ::", event);
+	}
+
+	parseWebSocketMessage(message: any): any {
+		let data: string;
+
+		// Check if the message is an instance of Buffer or similar binary type
+		if (message instanceof Buffer) {
+			// Decode the binary data to a string
+			data = message.toString('utf-8');
+		}
+		else if (typeof message === 'string') {
+			// If the message is already a string, use it directly
+			data = message;
+		}
+		else {
+			// If the message is neither binary nor string, it might be an error or unexpected type
+			throw new Error('Unsupported message format');
+		}
+
+		try {
+			// Parse the decoded string or the direct string as JSON
+			const parsedData = JSON.parse(data);
+			return parsedData;
+		}
+		catch (error) {
+			// Handle parsing errors (e.g., if the data is not valid JSON)
+			throw new Error('Failed to parse message as JSON');
+		}
 	}
 
 	/**
@@ -359,10 +367,15 @@ export class LincSocket implements ILincSocket {
 	handleMessage(event: any): void {
 		let jsonObj: any = event;
 
-		try {
-			const stringUtf8 = event.toString();
-			jsonObj          = JSON.parse(stringUtf8);
+		console.log("----> jsonObj ::", jsonObj);
 
+		try {
+			if (typeof event === 'string') {
+				jsonObj = JSON.parse(event);
+			}
+			else if (event?.type) {
+				throw new Error("Invalid message type");
+			}
 		}
 		catch (err) {
 			this.handleError(err);
@@ -375,7 +388,7 @@ export class LincSocket implements ILincSocket {
 				break;
 		}
 
-		console.log('handleMessage :: Message from server:', jsonObj);
+		console.log('handleMessage :: Message from server - A:', jsonObj);
 
 		if (jsonObj.id && this.awaitingAck.has(jsonObj.id)) {
 			this.awaitingAck.get(jsonObj.id)!.resolve();
@@ -516,7 +529,8 @@ export class LincSocket implements ILincSocket {
 	}
 
 	sendMessage(payload: ILincMessage): void {
-		this.send(JSON.stringify(payload));
+		const msg = JSON.stringify(payload);
+		this.send(msg);
 	}
 
 	sendMsgDong(): void {

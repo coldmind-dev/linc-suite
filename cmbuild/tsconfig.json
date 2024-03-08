@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"target":                           "ES2020",
+		"module":                           "CommonJS",
+		"moduleResolution":                 "Node",
+		"strict":                           false,
+		"rootDir":                          "./",
+		"baseUrl":                          "./src",
+		"esModuleInterop":                  true,
+		"forceConsistentCasingInFileNames": false,
+		"outDir":                           "./bin",
+		"declaration":                      true,
+		"declarationDir":                   "./bin",
+
+		"experimentalDecorators":           true,
+		"emitDecoratorMetadata":            true
+
+	},
+	"cmbuild":        {
+		"sourceRoot":  "./src",
+		"buildTarget":  "./build"
+	},
+	"include":         [
+		"./src/**/*.ts"
+	],
+	"exclude":         [
+		"./node_modules",
+		"./node_modules"
+	]
+}
+

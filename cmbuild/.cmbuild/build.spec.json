@@ -1,0 +1,17 @@
+{
+	"builds": [
+		{
+			"name":          "CMBuild",
+			"stripComments": true,
+			"minify":        true,
+			"source":        [
+				"src/linc.client-cmbuild.ts"
+			],
+			"output":        {
+				"globalVar":    "LincClient",
+				"bundleName":   "client-bundle.js",
+				"bundleFormat": "CommonJS"
+			}
+		}
+	]
+}

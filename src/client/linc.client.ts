@@ -28,7 +28,20 @@ export interface ILincClient {
 }
 
 export class LincClient extends LincSocket implements ILincClient {
-	public connectClient(host: string, port: number): Promise<any> {
+	private _host?: string;
+	private _port?: number;
+	private _socket: LincSocket;
+
+	constructor() {
+		super();
+	}
+
+	public connectClient(host?: string, port?: number): Promise<any> {
+
 		return Promise.resolve();
+	}
+
+	static fromPort(port: number): LincClient {
+		return new LincClient(`ws://localhost:{port}`);
 	}
 }

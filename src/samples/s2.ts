@@ -7,9 +7,9 @@
 import "reflect-metadata";
 import { container }     from "tsyringe";
 import { TSocketError }  from "../shared";
-import { TCloseEvent }   from "../shared";
-import { TMessageEvent } from "../shared";
-import { ILincPlugin }   from "../plugins/linc.plugin.type";
+import { TCloseEvent } from "../shared";
+import { TMsgEvent }   from "../shared";
+import { ILincPlugin } from "../plugins/linc.plugin.type";
 import { singleton }     from "tsyringe";
 import { LincServer }    from "../server/linc.server";
 import * as http              from "http";

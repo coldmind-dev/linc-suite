@@ -20,15 +20,15 @@
  * or the use or other dealings in the software.
  */
 
-import { Service }     from "@root/types/linc.di.types";
-import { ILincPlugin } from "@plugins/linc.plugin.type";
+import { Service }             from "@root/types/linc.di.types";
+import { ILincPlugin }         from "@plugins/linc.plugin.type";
 import { container }           from "tsyringe";
 import { DependencyContainer } from "tsyringe";
-import { MetaKeys } from "@root/linc.global";
-import { IResult }  from "@lib/cm.common/tstypes/cm.result.type";
-import { CMResult } from "@lib/cm.common/cm.result";
+import { MetaKeys }            from "@root/linc.global";
 import { LincServer }          from "@server/linc.server";
 import { log }                 from "@shared/linc.logger";
+import { IResult }             from "@lib/cm.common/tstypes/cm.result.type";
+import { CMResult }            from "@lib/cm.common/cm.result";
 
 @Service()
 export class LincPluginManager {

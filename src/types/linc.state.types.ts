@@ -5,13 +5,16 @@
  */
 
 export enum LincState {
-	None,
-	Connecting,
-	Connected,
-	Disconnected,
-	Closed,
-	Terminated,
-	ReConnecting,
-	Error
+	None         = -1000,
+	Connecting   = 0,
+	Open         = 1,
+	Connected    = 1,
+	Disconnected = -1,
+	Closing      = 2,
+	Closed       = 3,
+	Terminated   = 110,
+	ReConnecting = 120,
+	Error        = 130
 }
 
+export type TLincState = LincState;

@@ -24,9 +24,9 @@ import "reflect-metadata";
 import * as http                     from 'http';
 import WebSocket                     from 'ws';
 import { Server as WebSocketServer } from 'ws';
-import { ServerOptions } from "ws";
-import { HttpServer }    from "@root/types/linc.common.types";
-import { LincMessage }   from "@msg/linc.message";
+import { ServerOptions }             from "ws";
+import { HttpServer }                from "@root/types/linc.common.types";
+import { LincMessage }               from "@msg/linc.message";
 import { ILincMessage }              from "@msg/linc.message";
 import { ClientInfo }                from "@classes/client-info";
 import { log }                       from "@shared/linc.logger";
@@ -41,19 +41,19 @@ import { MiddlewareError }           from "@middleware/middleware-error";
 import { MiddlewareErrorType }       from "@middleware/middleware-error";
 import { TLincServerEvent }          from "@shared/linc.event.types";
 import { TCloseEvent }               from "@shared/linc.event.types";
-import { TSocketError }              from "@shared/linc.event.types";
-import { TSocketEvent }              from "@shared/linc.event.types";
-import { TMessageEvent }             from "@shared/linc.event.types";
-import { TServerPort }               from "@server/linc.property.types";
-import { TLincPlugin }               from "@plugins/linc.plugin.type";
-import { LincPluginManager }         from "@plugins/linc.plugin-manager";
-import { CMSignalHub }               from "@lib/cm.signal/cm.signal-hub";
-import { Subscription }              from "@lib/cm.signal/cm.signal-hub";
-import { ILincServerEvent }          from "@server/linc.server-event";
-import { LincEventType }             from "@server/linc.server-event";
-import { LincEventName }             from "@server/linc.server-event";
-import { LincServerEvent }           from "@server/linc.server-event";
-import { ServerApp }                 from "@root/types/linc.di.types";
+import { TSocketError }      from "@shared/linc.event.types";
+import { TSocketEvent }      from "@shared/linc.event.types";
+import { TMsgEvent }         from "@shared/linc.event.types";
+import { TServerPort }       from "@server/linc.property.types";
+import { TLincPlugin }       from "@plugins/linc.plugin.type";
+import { LincPluginManager } from "@plugins/linc.plugin-manager";
+import { ILincServerEvent }  from "@server/linc.server-event";
+import { LincEventType }     from "@server/linc.server-event";
+import { LincEventName }     from "@server/linc.server-event";
+import { LincServerEvent }   from "@server/linc.server-event";
+import { ServerApp }         from "@root/types/linc.di.types";
+import { CMSignalHub }       from "@lib/cm.signal/cm.signal-hub";
+import { Subscription }      from "@lib/cm.signal/cm.signal-hub";
 
 export type ErrorCallback = (error: Error, recover?: boolean) => void;
 
@@ -182,7 +182,7 @@ export class LincServer {
 		return this;
 	}
 
-	public usePlugin(plugin: { onClose: (event: TCloseEvent) => void; onError: (event: TSocketError) => void; onOpen: (event: TSocketEvent) => void; onMessage: (event: TMessageEvent) => void; initialize: (server?: LincServer) => Promise<void> }): this {
+	public usePlugin(plugin: { onClose: (event: TCloseEvent) => void; onError: (event: TSocketError) => void; onOpen: (event: TSocketEvent) => void; onMessage: (event: TMsgEvent) => void; initialize: (server?: LincServer) => Promise<void> }): this {
 		this.plugins.push(plugin);
 		return this;
 	}
@@ -242,11 +242,11 @@ export class LincServer {
 	private handleConnection(ws: WebSocket, req: http.IncomingMessage): void {
 		const ip = req.socket.remoteAddress || '';
 
-		if (this.isConnectionLimitReached(ip)) {
-			log.warn(`Connection limit reached for IP: ${ ip }`);
-			this.closeSocket(ws, LincEventType.ConnectionLimitReached)
-			return;
-		}
+		/*if (this.isConnectionLimitReached(ip)) {
+		 log.warn(`Connection limit reached for IP: ${ ip }`);
+		 this.closeSocket(ws, LincEventType.ConnectionLimitReached)
+		 return;
+		 }*/
 
 		const clientInfo = new ClientInfo(ip);
 		this.connections.set(ws, clientInfo);
